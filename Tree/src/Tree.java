@@ -135,6 +135,47 @@ public class Tree {
         }
     }
 
+    public void iterativePreOrder(Node root){
+        Node current = root;
+        Stack s = new Stack();
+        s.push(current);
+
+        while(!s.empty()){
+            current = (Node) s.pop();
+            current.displayNode();
+            if(current.right != null)
+                s.push(current.right);
+            if(current.left != null)
+                s.push(current.left);
+        }
+    }
+
+    //finding height of a tree
+    public int height(Node root){
+        if(root == null){
+            return 0;
+        }
+        return 1+ Math.max(height(root.left), height(root.right));
+    }
+
+    /* if both elements given are greater than root, recursively move to right
+    * else if they both are smaller then recursively move to left
+    * else return root cz either either it is equal to one of them or
+    * it is in between them and that makes the LCA(Lowest common ancestor)
+    */
+    public Node lca (Node root, int n1, int n2){
+
+      if(root.data > Math.max(n1, n2)){
+          return lca(root.left,n1,n2);
+      } else if(root.data <  Math.min(n1, n2)){
+          return lca(root.right,n1,n2);
+      } else {
+          return root;
+      }
+
+    }
+
+
     }
 
 

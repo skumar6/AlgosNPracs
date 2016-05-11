@@ -72,16 +72,19 @@ public class Tree {
     //its kind of BFS, we will taverse the tree level by level
     //most famous technique is to use queue for it.
     public void levelOrder(Node root){
+        if(root == null)
+            return;
         Node current = new Node();
+        current = root;
         Queue q = new LinkedList();
         q.add(current);
+        System.out.println(current.data);
         while(!q.isEmpty() ){
-            Node n = (Node)q.remove();
-            n.displayNode();
-            if(n.left != null)
-                q.add(n.left);
-            if(n.right != null)
-                q.add(n.right);
+            current  = (Node)q.remove();
+            if(current.left != null)
+                q.add(current.left);
+            if(current.right != null)
+                q.add(current.right);
         }
 
     }

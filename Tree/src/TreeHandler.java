@@ -11,5 +11,15 @@ public class TreeHandler {
        t.insert(12);
 
        t.inOrder(t.getRoot());
+       System.out.println("");
+//
+//       t.preOrder(t.getRoot());
+//       System.out.println("");
+//
+//       t.postOrder(t.getRoot());
+//       System.out.println("");
+
+       t.iterativeInOrder(t.getRoot());
+       //System.out.println("");
    }
 }

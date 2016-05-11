@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * Created by Sanjeev on 5/11/2016.
@@ -65,10 +66,11 @@ public class Tree {
         Node current = root;
         if(current == null)
             return;
-        preOrder(current.left);
-        preOrder(current.right);
+        postOrder(current.left);
+        postOrder(current.right);
         current.displayNode();
     }
+
     //its kind of BFS, we will taverse the tree level by level
     //most famous technique is to use queue for it.
     public void levelOrder(Node root){
@@ -86,11 +88,57 @@ public class Tree {
             if(current.right != null)
                 q.add(current.right);
         }
+    }
+    /* keep traversing and adding left children until its null, starting from
+       the root itself. if not null add, it current is null, pop n print, set current to current.right
+    * */
+    public void iterativeInOrder(Node root) {
+        Node current = root;
+        Stack s = new Stack<Node>();
+        if (root == null) {
+            return;
+        }
+
+        while (true) {
+            if (current != null) {
+                s.push(current);
+                current = current.left;
+            } else {
+                if (s.empty()) {
+                    break;
+                }
+                current = (Node) s.pop();
+                current.displayNode();
+                current = current.right;
+            }
+        }
+    }
+    //we ll need two stacks for this process
+    public void iterativePostOeder(Node root){
+        Node current = root;
+        Stack s1 = new Stack();
+        Stack s2 = new Stack();
+        s1.push(current);
+        while(!s1.empty()){
+            current = (Node) s1.pop();
+            s2.push(current);
+            if(current.left != null){
+                s1.push(current.left);
+            }
+            if(current.right != null) {
+                s1.push(current.right);
+            }
+        }
+        while(!s2.empty()){
+            current = (Node) s2.pop();
+            current.displayNode();
+        }
+    }
 
     }
 
 
-    }
+
 
 
 

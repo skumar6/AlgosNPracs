@@ -222,7 +222,6 @@ public class Tree {
         s.add(root);
         Node current;
         while (!s.isEmpty() || !q.isEmpty()) {
-
             while (!s.isEmpty()) {
                 current = (Node) s.pop();
                 current.displayNode();
@@ -232,7 +231,6 @@ public class Tree {
                     q.add(current.left);
             }
             System.out.println("");
-
             while (!q.isEmpty()) {
                 current = q.remove();
                 current.displayNode();
@@ -240,10 +238,35 @@ public class Tree {
                     s.push(current.right);
                 if (current.left != null)
                     s.push(current.left);
-
             }
             System.out.println("");
         }
+    }
+
+    public void topView(Node root){
+        Node current = root;
+        Stack s = new Stack();
+        Queue q = new LinkedList<Node>();
+        while(root != null){
+            s.push(root);
+            root = root.left;
+        }
+        while(current != null){
+            q.add(current);
+            current= current.right;
+        }
+        while(!s.empty()){
+            current = (Node) s.pop();
+            current.displayNode();
+        }
+        while(!q.isEmpty()){
+            current = (Node) q.remove();
+            current.displayNode();
+        }
+
+
+
+
     }
 
 

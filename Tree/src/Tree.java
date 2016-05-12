@@ -1,6 +1,4 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by Sanjeev on 5/11/2016.
@@ -173,6 +171,79 @@ public class Tree {
           return root;
       }
 
+    }
+
+    //we ll develop a program for vertical order traversal recursively
+    //adding to a tree map is special, traversal goes same like inorder
+    TreeMap<Integer, List<Node>> tm = new TreeMap<>();
+    public void verticalOrder(Node root,TreeMap<Integer, List<Node>> tm, int level){
+        int min=0, max=0;
+        if(root != null) {
+            addNode(root, tm, level);
+            verticalOrder(root.left,tm ,level - 1);
+            verticalOrder(root.right, tm, level + 1);
+        }
+        for(Integer i: tm.keySet()){
+            min = Math.min(i, min);
+            max = Math.max(i, max);
+        }
+        for(int i = min; i<=max; i++){
+            if(tm.containsKey(i)){
+                printlist(tm.get(i));
+
+            }
+            System.out.println("");
+        }
+    }
+
+    //helper method for vertical ptaversal
+    private void printlist(List<Node> nodes) {
+        for(Node n : nodes){
+            System.out.print(n.data+" ");
+        }
+
+    }
+    //helper method for vdrtical taversal
+    public void addNode(Node root, TreeMap<Integer, List<Node>> tm, int level){
+        if(tm.containsKey(level)){
+            tm.get(level).add(root);
+        }else{
+            LinkedList<Node> newList = new LinkedList<Node>();
+            newList.add(root);
+            tm.put(level, newList);
+        }
+    }
+
+    //spiral level order traversal
+    //changinf direction of spiral just change order of insertion in stack and queue implemented
+    public void spiralOrder(Node root) {
+        Stack s = new Stack();
+        Queue<Node> q = new LinkedList<Node>();
+        s.add(root);
+        Node current;
+        while (!s.isEmpty() || !q.isEmpty()) {
+
+            while (!s.isEmpty()) {
+                current = (Node) s.pop();
+                current.displayNode();
+                if (current.right != null)
+                    q.add(current.right);
+                if (current.left != null)
+                    q.add(current.left);
+            }
+            System.out.println("");
+
+            while (!q.isEmpty()) {
+                current = q.remove();
+                current.displayNode();
+                if (current.right != null)
+                    s.push(current.right);
+                if (current.left != null)
+                    s.push(current.left);
+
+            }
+            System.out.println("");
+        }
     }
 
 

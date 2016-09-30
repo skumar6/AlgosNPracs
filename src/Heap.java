@@ -43,7 +43,7 @@ public class Heap {
         }
         printarr(arr);
     }
-    
+
     //make heap from an array, run maxheapify on half the elements,
     //because rest half will be leaves ll be always on the bottom.
     public static int[] buildHeap(int[] arr){

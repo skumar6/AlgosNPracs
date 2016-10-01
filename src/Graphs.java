@@ -6,8 +6,8 @@ import java.util.Stack;
 public class Graphs {
 
     private final int MAX_VERT = 20;
-    private Vertex vertexList[];
-    private int adjMat[][];
+    public Vertex vertexList[];
+    private int[][] adjMat;
     private int nVerts;
     private Stack s;
 
@@ -31,12 +31,12 @@ public class Graphs {
     //add an edge
     public void addEdge (int start, int end){
         adjMat[start][end]=1;
-        adjMat[start][end]=1;
+        adjMat[end][start]=1;
     }
 
     //display a node
     public void displayVertex(int v){
-        System.out.println(vertexList[v].label);
+        System.out.print(vertexList[v].label);
     }
 
     /*dfs: the idea is to
@@ -47,19 +47,22 @@ public class Graphs {
     * */
 
     public void dfs(){
+
         //intialize from the first 0
         vertexList[0].isVisited = true;
         displayVertex(0);
         s.push(0);
 
         while(!s.isEmpty()){
+
             int v2  = getUnvisitedVertex((int)s.peek());
-            if(v2 != -1){
-                 s.push(v2);
-                 vertexList[v2].isVisited= true;
-                 displayVertex(v2);
-            }else{
+            if(v2 == -1){
                 s.pop();
+                System.out.println();
+            }else{
+                vertexList[v2].isVisited= true;
+                displayVertex(v2);
+                s.push(v2);
             }
         }
 
@@ -72,7 +75,7 @@ public class Graphs {
 
     public int getUnvisitedVertex(int v){
         for(int i =0; i<nVerts; i++){
-            if(adjMat[v][i] == 1) {
+            if(adjMat[v][i] == 1 && vertexList[i].isVisited==false) {
                 return i;
             }
         }

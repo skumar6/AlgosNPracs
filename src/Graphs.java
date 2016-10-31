@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -5,82 +7,107 @@ import java.util.Stack;
  */
 public class Graphs {
 
-    private final int MAX_VERT = 20;
-    public Vertex vertexList[];
-    private int[][] adjMat;
-    private int nVerts;
-    private Stack s;
+    public static int MAX_VERT = 20;
+    Vertex[] vertexList ;
+    int[][] adjMatrix;
+    int nVert;
 
     public Graphs(){
+        nVert = 0;
         vertexList = new Vertex[MAX_VERT];
-        adjMat = new int[MAX_VERT][MAX_VERT];
-        nVerts =0;
-        for(int i=0; i<MAX_VERT;i++){
-            for(int k =0; k<MAX_VERT; k++){
-                adjMat[i][k]=0;
+        adjMatrix = new int[MAX_VERT][MAX_VERT];
+
+        for(int i = 0; i< MAX_VERT; i++){
+            for(int j =0; j<MAX_VERT; j++){
+                adjMatrix[i][j] =0;
             }
         }
-        s = new Stack();
     }
 
-    //add a vertex to graph
-    public void addVertex(String label){
-        vertexList[nVerts++] = new Vertex(label);
+    //add a vertex
+    public void addVertex(String l){
+        vertexList[nVert++] = new Vertex(l);
     }
 
     //add an edge
-    public void addEdge (int start, int end){
-        adjMat[start][end]=1;
-        adjMat[end][start]=1;
+    public void addEdge(int i, int j){
+        adjMatrix[i][j]=1;
+        adjMatrix[j][i]=1;
     }
 
-    //display a node
-    public void displayVertex(int v){
-        System.out.print(vertexList[v].label);
+    //display
+    public void display(int v){
+        System.out.print(vertexList[v].label + " ");
     }
 
-    /*dfs: the idea is to
-    * 1.visit first vertex, set the flag visited, take one of its adj nodes and move forward
-    * 2.take a stack and put visited nodes on it
-    * 3.when hit the deadend, backtrack popping out, on the peek see for unvisited node
-    * 4. if yes, put on stack, if no pop out.
-    * */
-
-    public void dfs(){
-
-        //intialize from the first 0
-        vertexList[0].isVisited = true;
-        displayVertex(0);
-        s.push(0);
-
-        while(!s.isEmpty()){
-
-            int v2  = getUnvisitedVertex((int)s.peek());
-            if(v2 == -1){
-                s.pop();
-                System.out.println();
-            }else{
-                vertexList[v2].isVisited= true;
-                displayVertex(v2);
-                s.push(v2);
-            }
-        }
-
-        //if stack becomes empty we are done, set the flags
-        for(int i =0; i<nVerts; i++){
-            vertexList[i].isVisited = false;
-        }
-
-    }
-
-    public int getUnvisitedVertex(int v){
-        for(int i =0; i<nVerts; i++){
-            if(adjMat[v][i] == 1 && vertexList[i].isVisited==false) {
+    //get list of all neighbours
+    public int getAdjanctVertex(int v){
+        for(int i =0; i< MAX_VERT; i++){
+            if(adjMatrix[v][i] == 1 && !vertexList[i].isVisited)
                 return i;
-            }
         }
         return -1;
     }
+
+    /*depth first search implemnts stack
+    1.push current node to stack
+    2.keeping pushing until node has adjacent node
+    3.if not, pop continue 2, 1.
+     */
+    public void dfs (){
+        Stack<Integer> s = new Stack<Integer>();
+        vertexList[0].isVisited = true;
+        display(0);
+        s.push(0);
+
+        while(!s.isEmpty()){
+            int v = getAdjanctVertex(s.peek());
+            if(v == -1) {
+                s.pop();
+                System.out.println(" ");
+            }
+            else{
+                vertexList[v].isVisited = true;
+                display(v);
+                s.push(v);
+            }
+
+        }
+        for(int i =0; i<nVert; i++){
+            vertexList[i].isVisited = false;
+        }
+    }
+
+    /*breadth first search
+    1. we ll be using queue over here
+    2.put every adjacent, unvisited vertex on the queue
+     3.similar to trees
+     4.when no univisted node level is done
+     5.pop and do the same
+     6.queue empty? you are done
+     */
+    public void bfs(){
+        Queue<Integer> q = new LinkedList<Integer>();
+        q.add(0);
+        display(0);
+        vertexList[0].isVisited= true;
+        int v1;
+
+        while(!q.isEmpty()){
+            int cur = q.remove();
+            while((v1=getAdjanctVertex(cur))!= -1){
+                display(v1);
+                vertexList[v1].isVisited = true;
+                q.add(v1);
+            }
+            
+        }
+
+        for(int i =0; i<nVert; i++){
+            vertexList[i].isVisited= false;
+        }
+    }
+
 
 
 }
